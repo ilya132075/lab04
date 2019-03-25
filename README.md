@@ -20,12 +20,15 @@ $ export GITHUB_USERNAME=<имя_пользователя>
 ```
 
 ```ShellSession
+#Переходим в рабочее пространоство
 $ cd ${GITHUB_USERNAME}/workspace
 $ pushd .
+~/ilya132075/workspace ~/ilya132075/workspace
 $ source scripts/activate
 ```
 
 ```ShellSession
+#Копируем в локальной репризиторий **lab02** c **github**.com в папку **lab03**
 $ git clone https://github.com/${GITHUB_USERNAME}/lab02.git projects/lab03
 $ cd projects/lab03
 $ git remote remove origin
@@ -35,24 +38,70 @@ $ git remote add origin https://github.com/${GITHUB_USERNAME}/lab03.git
 ```ShellSession
 $ g++ -std=c++11 -I./include -c sources/print.cpp
 $ ls print.o
+print.o
 $ nm print.o | grep print
+0000000000000098 t _GLOBAL__sub_I__Z5printRKSsRSo
+0000000000000000 T _Z5printRKSsRSo
+0000000000000027 T _Z5printRKSsRSt14basic_ofstreamIcSt11char_traitsIcEE
 $ ar rvs print.a print.o
+ar: создаётся print.a
+a - print.o
 $ file print.a
+print.a: current ar archive
 $ g++ -std=c++11 -I./include -c examples/example1.cpp
 $ ls example1.o
+example1.o
 $ g++ example1.o print.a -o example1
 $ ./example1 && echo
+hello
 ```
 
 ```ShellSession
 $ g++ -std=c++11 -I./include -c examples/example2.cpp
 $ nm example2.o
+0000000000000000 b .bss
+0000000000000000 d .ctors
+0000000000000000 d .data
+0000000000000000 p .pdata
+0000000000000000 p .pdata$_ZStorSt13_Ios_OpenmodeS_
+0000000000000000 r .rdata
+0000000000000000 r .rdata$.refptr.__dso_handle
+0000000000000000 r .rdata$.refptr._ZNSt8ios_base4InitD1Ev
+0000000000000000 r .rdata$zzz
+0000000000000000 R .refptr.__dso_handle
+0000000000000000 R .refptr._ZNSt8ios_base4InitD1Ev
+0000000000000000 t .text
+0000000000000000 t .text$_ZStorSt13_Ios_OpenmodeS_
+0000000000000000 r .xdata
+0000000000000000 r .xdata$_ZStorSt13_Ios_OpenmodeS_
+                 U __cxa_atexit
+                 U __dso_handle
+                 U __gxx_personality_seh0
+                 U __main
+000000000000014e t _GLOBAL__sub_I_main
+                 U _Unwind_Resume
+0000000000000104 t _Z41__static_initialization_and_destruction_0ii
+                 U _Z5printRKSsRSt14basic_ofstreamIcSt11char_traitsIcEE
+                 U _ZNSaIcEC1Ev
+                 U _ZNSaIcED1Ev
+                 U _ZNSsC1EPKcRKSaIcE
+                 U _ZNSsD1Ev
+                 U _ZNSt14basic_ofstreamIcSt11char_traitsIcEEC1EPKcSt13_Ios_Openmode
+                 U _ZNSt14basic_ofstreamIcSt11char_traitsIcEED1Ev
+                 U _ZNSt8ios_base4InitC1Ev
+                 U _ZNSt8ios_base4InitD1Ev
+0000000000000000 r _ZStL19piecewise_construct
+0000000000000000 b _ZStL8__ioinit
+0000000000000000 T _ZStorSt13_Ios_OpenmodeS_
+0000000000000000 T main
 $ g++ example2.o print.a -o example2
 $ ./example2
 $ cat log.txt && echo
+hello
 ```
 
 ```ShellSession
+Удаление файлов
 $ rm -rf example1.o example2.o print.o
 $ rm -rf print.a
 $ rm -rf example1 example2
@@ -87,7 +136,10 @@ EOF
 
 ```ShellSession
 $ cmake -H. -B_build
+...
+--Build files have been written to: /home/prost/ilya132075/workspace/projects/lab03/_build
 $ cmake --build _build
+Built target print
 ```
 
 ```ShellSession
@@ -108,20 +160,25 @@ EOF
 
 ```ShellSession
 $ cmake --build _build
+Built target print
 $ cmake --build _build --target print
+Built target print
 $ cmake --build _build --target example1
+Built target example1
 $ cmake --build _build --target example2
+Built target example2
 ```
 
 ```ShellSession
 $ ls -la _build/libprint.a
+-rw-r--r-- 1 prost prost 2498 мар 25 21:33 _build/libprint.a
 $ _build/example1 && echo
 hello
 $ _build/example2
 $ cat log.txt && echo
 hello
 $ rm -rf log.txt
-```
+``` 
 
 ```ShellSession
 $ git clone https://github.com/tp-labs/lab03 tmp
@@ -132,8 +189,19 @@ $ rm -rf tmp
 ```ShellSession
 $ cat CMakeLists.txt
 $ cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install
+-- Build files have been written to: /home/prost/ilya132075/workspace/projects/lab03/_build
 $ cmake --build _build --target install
 $ tree _install
+_install
+├── cmake
+│   ├── print-config.cmake
+│   └── print-config-noconfig.cmake
+├── include
+│   └── print.hpp
+└── lib
+    └── libprint.a
+
+3 directories, 4 files
 ```
 
 ```ShellSession
